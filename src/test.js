@@ -1,4 +1,5 @@
 import http from "k6/http"
+import ws from "k6/ws";
 
 const customerUrl = 'http://localhost:4000/api/customers'
 const regularUrl = 'http://localhost:4000/api'
