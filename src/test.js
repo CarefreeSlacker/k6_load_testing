@@ -139,10 +139,31 @@ const wsBlock = function(guardianToken, customerName, activityId) {
             )
         )
 
+        socket.setTimeout(function() {
+            console.log('actvity is about to closed')
+            socket.send(JSON.stringify(
+                [null, null, `room:${activityId}`, 'left', {'showSurvey': true, activityId: activityId}]
+            ))
+        }, 7000)
+
         socket.setTimeout(function () {
             console.log('4 seconds passed, closing the socket');
             socket.close();
-        }, 4000);
+        }, 10000);
+
+
+        // ["1","1","room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","phx_join",{"guardian_token":"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJDdXN0b21lcjoxIiwiZXhwIjoxNTI4ODEyMzg5LCJpYXQiOjE1MjYyMjAzODksImlzcyI6IkN0aU9tbmkiLCJqdGkiOiJjYzg4YThlMy0zZjY5LTQxNDgtOWE3Zi1kOWQ0MWIzNGNkY2MiLCJwZW0iOnt9LCJzdWIiOiJDdXN0b21lcjoxIiwidHlwIjoiYWNjZXNzIn0.k4vSDUiEjaYiPr-iPPBfi3Wsq6TkXkxTscGztP3-C-XB7WiVtNMTeLHKrAUAnehP4M72e6HuS6we7Z4ux4MtZA"}]
+        // ["1","1","room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","phx_reply",{"status":"ok","response":{}}]
+        // [null,null,"room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","presence_state",{}]
+        // [null,null,"room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","presence_diff",{"leaves":{},"joins":{"customer:1":{"metas":[{"phxRef":"NQXol1onwuM=","onlineAt":"1526589873113"}]}}}]
+        // ["1","2","room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","is_read",{"ids":[97]}]
+        // ["1","3","room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","is_typing",{"value":true}]
+        // ["1","4","room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","new_msg",{"temporaryId":"gXvFFgjP6U","body":"sdf","activityId":"9f9e371a-cefe-42ad-93c3-501d887a5ad6","insertedAt":"2018-05-17T20:44:36.483Z","sender":"customer","username":"#89997777777"}]
+        // ["1","4","room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","phx_reply",{"status":"ok","response":{"updatedAt":"2018-05-17T20:44:36.500339Z","sender":"customer","providerMessageId":null,"operatorId":null,"isRead":false,"insertedAt":"2018-05-17T20:44:36.500328Z","id":101,"customerId":1,"body":"sdf","attachment":null,"activityId":"9f9e371a-cefe-42ad-93c3-501d887a5ad6"}}]
+        // ["1","5","room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","is_typing",{"value":false}]
+        // ["1","6","room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","is_read",{"ids":[97]}]
+        // ["1","7","room:9f9e371a-cefe-42ad-93c3-501d887a5ad6","is_read",{"ids":[97]}]
+
     });
     console.log(`socket is ready: ${JSON.stringify(result)}`)
     check(result, { "status is 101": (r) => r && r.status === 101 });
@@ -172,20 +193,3 @@ export default function() {
     console.log(`ws: ${JSON.stringify(ws)}`)
     return true
 }
-
-// "1"
-// 1
-// :
-// "1"
-// 2
-// :
-// "room:7eff2071-d82c-4a59-9554-a297e382e1bf"
-// 3
-// :
-// "phx_join"
-// 4
-// :
-// {,…}
-// guardian_token
-//     :
-//     "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJDdXN0b21lcjoxIiwiZXhwIjoxNTI4ODEyMzg5LCJpYXQiOjE1MjYyMjAzODksImlzcyI6IkN0aU9tbmkiLCJqdGkiOiJjYzg4YThlMy0zZjY5LTQxNDgtOWE3Zi1kOWQ0MWIzNGNkY2MiLCJwZW0iOnt9LCJzdWIiOiJDdXN0b21lcjoxIiwidHlwIjoiYWNjZXNzIn0.k4vSDUiEjaYiPr-iPPBfi3Wsq6TkXkxTscGztP3-C-XB7WiVtNMTeLHKrAUAnehP4M72e6HuS6we7Z4ux4M
