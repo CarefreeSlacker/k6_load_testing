@@ -18,6 +18,7 @@ const sendRegularRequest = function(payload, authorizationHeader) {
 }
 
 const initAuth = function(phoneNumber) {
+    console.log(`phoneNumber: ${phoneNumber}`)
     const result = sendCustomerRequest({
         query: 'mutation InitAuth($provider: String!, $providerId: String!){ initAuth(provider: $provider, providerId: $providerId) { id }}',
         variables: {
@@ -26,6 +27,7 @@ const initAuth = function(phoneNumber) {
         },
         operationName: 'InitAuth'
     })
+    console.log(`request sent ${JSON.stringify(result)}`)
     return result.data.initAuth.id
 }
 
@@ -142,7 +144,7 @@ const wsBlock = function(guardianToken, customerName, activityId) {
         socket.setTimeout(function() {
             console.log('actvity is about to closed')
             socket.send(JSON.stringify(
-                [null, null, `room:${activityId}`, 'left', {'showSurvey': true, activityId: activityId}]
+                [null, null, `room:${activityId}`, 'phx_leave', {}]
             ))
         }, 7000)
 
